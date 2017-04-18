@@ -63,6 +63,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.which.which">
+            function <span class="apidocSignatureSpan"></span>which
+            <span class="apidocSignatureSpan">(cmd, opt, cb)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <a class="apidocElementLiA" href="#apidoc.element.which.sync">
             function <span class="apidocSignatureSpan">which.</span>sync
             <span class="apidocSignatureSpan">(cmd, opt)</span>
@@ -76,6 +85,61 @@
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.which" id="apidoc.module.which">module which</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.which.which" id="apidoc.element.which.which">
+        function <span class="apidocSignatureSpan"></span>which
+        <span class="apidocSignatureSpan">(cmd, opt, cb)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function which(cmd, opt, cb) {
+  if (typeof opt === &#x27;function&#x27;) {
+    cb = opt
+    opt = {}
+  }
+
+  var info = getPathInfo(cmd, opt)
+  var pathEnv = info.env
+  var pathExt = info.ext
+  var pathExtExe = info.extExe
+  var found = []
+
+  ;(function F (i, l) {
+    if (i === l) {
+      if (opt.all &#x26;&#x26; found.length)
+        return cb(null, found)
+      else
+        return cb(getNotFoundError(cmd))
+    }
+
+    var pathPart = pathEnv[i]
+    if (pathPart.charAt(0) === &#x27;&#x22;&#x27; &#x26;&#x26; pathPart.slice(-1) === &#x27;&#x22;&#x27;)
+      pathPart = pathPart.slice(1, -1)
+
+    var p = path.join(pathPart, cmd)
+    if (!pathPart &#x26;&#x26; (/^\.[\\\/]/).test(cmd)) {
+      p = cmd.slice(0, 2) + p
+    }
+    ;(function E (ii, ll) {
+      if (ii === ll) return F(i + 1, l)
+      var ext = pathExt[ii]
+      isexe(p + ext, { pathExt: pathExtExe }, function (er, is) {
+        if (!er &#x26;&#x26; is) {
+          if (opt.all)
+            found.push(p + ext)
+          else
+            return cb(null, p + ext)
+        }
+        return E(ii + 1, ll)
+      })
+    })(0, pathExt.length)
+  })(0, pathEnv.length)
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 
     <h2>
