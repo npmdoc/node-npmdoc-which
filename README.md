@@ -1,9 +1,14 @@
-# api documentation for  [which (v1.2.14)](https://github.com/isaacs/node-which#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-which.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-which) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-which.svg)](https://travis-ci.org/npmdoc/node-npmdoc-which)
+# npmdoc-which
+
+#### api documentation for  [which (v1.2.14)](https://github.com/isaacs/node-which#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-which.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-which) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-which.svg)](https://travis-ci.org/npmdoc/node-npmdoc-which)
+
 #### Like which(1) unix command. Find the first instance of an executable in the PATH.
 
-[![NPM](https://nodei.co/npm/which.png?downloads=true)](https://www.npmjs.com/package/which)
+[![NPM](https://nodei.co/npm/which.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/which)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-which/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-which_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-which/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-which/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-which/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-which/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-which/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-which/build/screenCapture.npmPackageListing.svg)
 
@@ -18,7 +23,6 @@
 {
     "author": {
         "name": "Isaac Z. Schlueter",
-        "email": "i@izs.me",
         "url": "http://blog.izs.me"
     },
     "bin": {
@@ -51,13 +55,11 @@
     "main": "which.js",
     "maintainers": [
         {
-            "name": "isaacs",
-            "email": "i@izs.me"
+            "name": "isaacs"
         }
     ],
     "name": "which",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/isaacs/node-which.git"
@@ -69,80 +71,6 @@
     },
     "version": "1.2.14"
 }
-```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module which](#apidoc.module.which)
-1.  [function <span class="apidocSignatureSpan">which.</span>sync (cmd, opt)](#apidoc.element.which.sync)
-
-
-
-# <a name="apidoc.module.which"></a>[module which](#apidoc.module.which)
-
-#### <a name="apidoc.element.which.sync"></a>[function <span class="apidocSignatureSpan">which.</span>sync (cmd, opt)](#apidoc.element.which.sync)
-- description and source-code
-```javascript
-function whichSync(cmd, opt) {
-  opt = opt || {}
-
-  var info = getPathInfo(cmd, opt)
-  var pathEnv = info.env
-  var pathExt = info.ext
-  var pathExtExe = info.extExe
-  var found = []
-
-  for (var i = 0, l = pathEnv.length; i < l; i ++) {
-    var pathPart = pathEnv[i]
-    if (pathPart.charAt(0) === '"' && pathPart.slice(-1) === '"')
-      pathPart = pathPart.slice(1, -1)
-
-    var p = path.join(pathPart, cmd)
-    if (!pathPart && /^\.[\\\/]/.test(cmd)) {
-      p = cmd.slice(0, 2) + p
-    }
-    for (var j = 0, ll = pathExt.length; j < ll; j ++) {
-      var cur = p + pathExt[j]
-      var is
-      try {
-        is = isexe.sync(cur, { pathExt: pathExtExe })
-        if (is) {
-          if (opt.all)
-            found.push(cur)
-          else
-            return cur
-        }
-      } catch (ex) {}
-    }
-  }
-
-  if (opt.all && found.length)
-    return found
-
-  throw getNotFoundError(cmd)
-}
-```
-- example usage
-```shell
-...
-which('node', function (er, resolvedPath) {
-  // er is returned if no "node" is found on the PATH
-  // if it is found, then the absolute path to the exec is returned
-})
-
-// sync usage
-// throws if not found
-var resolved = which.sync('node')
-
-// Pass options to override the PATH and PATHEXT environment vars.
-which('node', { path: someOtherPath }, function (er, resolved) {
-  if (er)
-    throw er
-  console.log('found at %j', resolved)
-})
-...
 ```
 
 
